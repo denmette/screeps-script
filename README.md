@@ -1,6 +1,6 @@
 # Screeps Script
 
-![Build workflow](https://github.com/denmette/screeps-script/.github/workflows/build-workflow.yml/badge.svg)
+[![Build workflow](https://github.com/denmette/screeps-script/actions/workflows/build-workflow.yml/badge.svg)](https://github.com/denmette/screeps-script/actions/workflows/build-workflow.yml)
 
 My scripts for the game [Screeps](https://screeps.com/). The official API is located [here](https://docs.screeps.com/api).
 
