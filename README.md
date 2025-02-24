@@ -1,6 +1,6 @@
 # Screeps Script
 
-[![Build Status](https://www.travis-ci.com/slothsoft/screeps-script.svg?branch=main)](https://www.travis-ci.com/slothsoft/screeps-script)
+![Build workflow](https://github.com/denmette/screeps-script/.github/workflows/build-workflow.yml/badge.svg)
 
 My scripts for the game [Screeps](https://screeps.com/). The official API is located [here](https://docs.screeps.com/api).
 
