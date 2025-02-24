@@ -1,45 +1,44 @@
 /*
- * The main loop of the game. 
+ * The main loop of the game.
  */
 
-var MainUtil = require('./main.util');
-var MainInfo = require('./main.info');
+var MainUtil = require("./main.util");
+var MainInfo = require("./main.info");
 
-var BaseManager = require('./manager.base');
-var CpuManager = require('./manager.cpu');
-var LinkManager = require('./manager.link');
-var MayorManager = require('./manager.mayor');
-var MemoryManager = require('./manager.memory');
-var RoadManager = require('./manager.road');
-var RoomManager = require('./manager.room');
-var TowerManager = require('./manager.tower');
+var BaseManager = require("./manager.base");
+var CpuManager = require("./manager.cpu");
+var LinkManager = require("./manager.link");
+var MayorManager = require("./manager.mayor");
+var MemoryManager = require("./manager.memory");
+var RoadManager = require("./manager.road");
+var RoomManager = require("./manager.room");
+var TowerManager = require("./manager.tower");
 
-var Explorer = require('./role.explorer');
-var Miner = require('./role.miner');
+var Explorer = require("./role.explorer");
+var Miner = require("./role.miner");
 
-var TileArray = require('./tile.array');
+var TileArray = require("./tile.array");
 
 module.exports.loop = function () {
-    
-    // init all necessary information
+  // init all necessary information
 
-    var allRoles = BaseManager.fetchAllRoles();
-    CpuManager.initRound();
-    CpuManager.measure('initRound()', () => MemoryManager.initRound(allRoles));
+  var allRoles = BaseManager.fetchAllRoles();
+  CpuManager.initRound();
+  CpuManager.measure("initRound()", () => MemoryManager.initRound(allRoles));
 
-    // run the entire base
+  // run the entire base
 
-    CpuManager.measure('BaseManager', BaseManager.runAll);
-    CpuManager.measure('TowerManager', TowerManager.runAll);
-    CpuManager.measure('LinkManager', LinkManager.runAll);
-    CpuManager.measure('RoadManager', RoadManager.watchAllRooms);
-    CpuManager.measure('MayorManager', MayorManager.runAll);
+  CpuManager.measure("BaseManager", BaseManager.runAll);
+  CpuManager.measure("TowerManager", TowerManager.runAll);
+  CpuManager.measure("LinkManager", LinkManager.runAll);
+  CpuManager.measure("RoadManager", RoadManager.watchAllRooms);
+  CpuManager.measure("MayorManager", MayorManager.runAll);
 
-    // print GUI on top
+  // print GUI on top
 
-    MainInfo.visualize();
-    CpuManager.visualize();
-}
+  MainInfo.visualize();
+  CpuManager.visualize();
+};
 
 // some helper methods to make managing this thing more easily
 
@@ -50,16 +49,24 @@ module.exports.loop = function () {
  */
 
 global.fetchOldestCreep = function (baseName) {
-    var oldestCreep = MainUtil.findAllCreeps().
-        filter(creep => (!baseName || creep.room.memory.home == baseName)).
-        sort((a, b) => { return a.ticksToLive - b.ticksToLive });
+  var oldestCreep = MainUtil.findAllCreeps()
+    .filter((creep) => !baseName || creep.room.memory.home == baseName)
+    .sort((a, b) => {
+      return a.ticksToLive - b.ticksToLive;
+    });
 
-    if (oldestCreep.length > 0) {
-        MainInfo.log('Oldest creep: ' + oldestCreep[0].name + ' (' + oldestCreep[0].ticksToLive + ' ttl)');
-        return oldestCreep[0];
-    }
-    MainInfo.error('No creep found.');
-    return null;
+  if (oldestCreep.length > 0) {
+    MainInfo.log(
+      "Oldest creep: " +
+        oldestCreep[0].name +
+        " (" +
+        oldestCreep[0].ticksToLive +
+        " ttl)",
+    );
+    return oldestCreep[0];
+  }
+  MainInfo.error("No creep found.");
+  return null;
 };
 
 /*
@@ -70,7 +77,7 @@ global.fetchOldestCreep = function (baseName) {
  */
 
 global.spawnMiner = function (spawnId, sourceId) {
-    return new Miner().spawnCreepFromSpawnName(spawnId, sourceId);
+  return new Miner().spawnCreepFromSpawnName(spawnId, sourceId);
 };
 
 /*
@@ -81,7 +88,7 @@ global.spawnMiner = function (spawnId, sourceId) {
  */
 
 global.spawnExplorer = function (spawnId, flagName) {
-    return new Explorer().spawnCreepFromSpawnName(spawnId, flagName);
+  return new Explorer().spawnCreepFromSpawnName(spawnId, flagName);
 };
 
 /*
@@ -92,12 +99,12 @@ global.spawnExplorer = function (spawnId, flagName) {
  */
 
 global.spawnCreepForRoom = function (roomName, roleName) {
-    var room = Game.rooms[roomName];
-    if (room) {
-        return new BaseManager(room).spawnCreepForRoleName(roleName);
-    }
-    MainInfo.error('Could not find room: ' + roomName);
-    return false;
+  var room = Game.rooms[roomName];
+  if (room) {
+    return new BaseManager(room).spawnCreepForRoleName(roleName);
+  }
+  MainInfo.error("Could not find room: " + roomName);
+  return false;
 };
 
 /*
@@ -107,7 +114,7 @@ global.spawnCreepForRoom = function (roomName, roleName) {
  */
 
 global.makeLinkTarget = function (linkId) {
-    LinkManager.makeLinkTarget(linkId);
+  LinkManager.makeLinkTarget(linkId);
 };
 
 /*
@@ -117,7 +124,7 @@ global.makeLinkTarget = function (linkId) {
  */
 
 global.makeLinkSource = function (linkId) {
-    LinkManager.makeLinkSource(linkId);
+  LinkManager.makeLinkSource(linkId);
 };
 
 /*
@@ -127,12 +134,12 @@ global.makeLinkSource = function (linkId) {
  */
 
 global.selfdestruct = function (creepName) {
-    var creep = Game.creeps[creepName];
-    if (!creep) {
-        MainInfo.error('Could not find creep: ' + creepName);
-        return;
-    }
-    creep.memory.selfdestruct = true;
+  var creep = Game.creeps[creepName];
+  if (!creep) {
+    MainInfo.error("Could not find creep: " + creepName);
+    return;
+  }
+  creep.memory.selfdestruct = true;
 };
 
 /*
@@ -143,16 +150,16 @@ global.selfdestruct = function (creepName) {
  */
 
 global.moveCreepTo = function (creepName, gameObjectId) {
-    var creep = Game.creeps[creepName];
-    if (!creep) {
-        MainInfo.error('Could not find creep: ' + creepName);
-        return;
-    }
-    if (!Game.getObjectById(gameObjectId)) {
-        MainInfo.error('Could not find game object: ' + gameObjectId);
-        return;
-    }
-    creep.memory.moveToGameObject = gameObjectId;
+  var creep = Game.creeps[creepName];
+  if (!creep) {
+    MainInfo.error("Could not find creep: " + creepName);
+    return;
+  }
+  if (!Game.getObjectById(gameObjectId)) {
+    MainInfo.error("Could not find game object: " + gameObjectId);
+    return;
+  }
+  creep.memory.moveToGameObject = gameObjectId;
 };
 
 /*
@@ -160,7 +167,7 @@ global.moveCreepTo = function (creepName, gameObjectId) {
  */
 
 global.clearConsole = function () {
-    MainInfo.clearLines();
+  MainInfo.clearLines();
 };
 
 /*
@@ -170,12 +177,15 @@ global.clearConsole = function () {
  * @param array {TileArray} (or nothing)
  */
 
-global.generateLayoutForRoom = function (roomName, array = new TileArray(50, 50)) {
-    var room = Game.rooms[roomName];
-    if (room) {
-        var layout = RoomManager.generateLayoutForRoom(room, array);
-        return layout.replace(/.{50}/, "$1\n");
-    } 
-    MainInfo.error('Could not find room: ' + roomName);
-    return false;
+global.generateLayoutForRoom = function (
+  roomName,
+  array = new TileArray(50, 50),
+) {
+  var room = Game.rooms[roomName];
+  if (room) {
+    var layout = RoomManager.generateLayoutForRoom(room, array);
+    return layout.replace(/.{50}/, "$1\n");
+  }
+  MainInfo.error("Could not find room: " + roomName);
+  return false;
 };

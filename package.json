@@ -20,6 +20,16 @@
   },
   "homepage": "https://github.com/denmette/screeps-script#readme",
   "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^15.4.3",
     "mocha": "^11.0.0"
+  },
+  "lint-staged": {
+    "*.js": "prettier --write"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }

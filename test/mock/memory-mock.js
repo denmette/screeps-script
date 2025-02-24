@@ -3,12 +3,11 @@
  */
 
 class Memory {
-
-    constructor() {
-        this.creeps = {};
-        this.rooms = {};
-        this.spawns = {};
-    }
+  constructor() {
+    this.creeps = {};
+    this.rooms = {};
+    this.spawns = {};
+  }
 }
 
 global.Memory = new Memory();
