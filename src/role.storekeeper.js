@@ -11,31 +11,31 @@ var RolePrototype = require('./role.prototype');
 
 class StoreKeeper extends RolePrototype {
 
-	constructor() {
-		super('Storekeeper', '#ff9900', '🏭');
-		this.priority = -1;
-	}
+    constructor() {
+        super('Storekeeper', '#ff9900', '🏭');
+        this.priority = -1;
+    }
 
-	isNecessary(room) {
-		return true;
-	}
+    isNecessary(room) {
+        return true;
+    }
 
-	_work(creep) {
-		this._commuteBetweenSourceAndTarget(creep, target => creep.transfer(target, RESOURCE_ENERGY));
-	}
+    _work(creep) {
+        this._commuteBetweenSourceAndTarget(creep, target => creep.transfer(target, RESOURCE_ENERGY));
+    }
 
-	spawnCreep(spawn) {
-		return this._spawnCreepWithParts(spawn, [MOVE, CARRY]);
-	}
+    spawnCreep(spawn) {
+        return this._spawnCreepWithParts(spawn, [MOVE, CARRY]);
+    }
 
     _findSources(room) {
-	    return room.find(FIND_MY_STRUCTURES, {
-	            filter: (structure) => {
-	                return (structure.structureType == STRUCTURE_STORAGE ||
-	                        structure.structureType == STRUCTURE_CONTAINER) && 
-	                        structure.store.getUsedCapacity(RESOURCE_ENERGY) > 0;
-	            }
-	    });
+        return room.find(FIND_MY_STRUCTURES, {
+                filter: (structure) => {
+                    return (structure.structureType == STRUCTURE_STORAGE ||
+                            structure.structureType == STRUCTURE_CONTAINER) &&
+                            structure.store.getUsedCapacity(RESOURCE_ENERGY) > 0;
+                }
+        });
     }
     
     _findTargets(room)  {

@@ -15,359 +15,359 @@ var TileArray = require('../src/tile.array');
 
 // All methods tested.
 
-describe('main', () => {	
-	beforeEach(() => {
-		global.RoomPosition = RoomPosition;
-	});
+describe('main', () => {
+    beforeEach(() => {
+        global.RoomPosition = RoomPosition;
+    });
 
-	beforeEach(() => {
-		Game.clearAll();
-		info.clearLines();
-	});
-	
-	it('exists', () => {
-		assert.equal(typeof classUnderTest === 'object' && classUnderTest !== null, true);
-	});
+    beforeEach(() => {
+        Game.clearAll();
+        info.clearLines();
+    });
 
-	describe('#selfdestruct', () => {
-		it('with creep', () => {
-			var creep = new Creep();
-			
-			selfdestruct(creep.id);
+    it('exists', () => {
+        assert.equal(typeof classUnderTest === 'object' && classUnderTest !== null, true);
+    });
 
-			assert.equal(true, creep.memory.selfdestruct);
-		});
+    describe('#selfdestruct', () => {
+        it('with creep', () => {
+            var creep = new Creep();
 
-		it('without creep', () => {
-			selfdestruct('ID');
+            selfdestruct(creep.id);
 
-			assert.equal(1, info.getLines().length);
-			assert.equal('🛑 Could not find creep: ID', info.getLine(0));
-		});
-	});
+            assert.equal(true, creep.memory.selfdestruct);
+        });
 
-	describe('#fetchOldestCreep', () => {
-		it('with creeps', () => {
-			var creep1 = new Creep('A');
-			creep1.ticksToLive = 200;
-			var creep2 = new Creep('B');
-			creep2.ticksToLive = 20;
-			var creep3 = new Creep('C');
-			creep3.ticksToLive = 2000;
-			
-			MainUtil.findAllCreeps = () => [ creep1, creep2, creep3 ];
+        it('without creep', () => {
+            selfdestruct('ID');
 
-			assert.equal(creep2, fetchOldestCreep());
-			assert.equal(1, info.getLines().length);
-			assert.equal('Oldest creep: B (20 ttl)', info.getLine(0));
-		});
+            assert.equal(1, info.getLines().length);
+            assert.equal('🛑 Could not find creep: ID', info.getLine(0));
+        });
+    });
 
-		it('without creep', () => {
-			MainUtil.findAllCreeps = () => [ ];
+    describe('#fetchOldestCreep', () => {
+        it('with creeps', () => {
+            var creep1 = new Creep('A');
+            creep1.ticksToLive = 200;
+            var creep2 = new Creep('B');
+            creep2.ticksToLive = 20;
+            var creep3 = new Creep('C');
+            creep3.ticksToLive = 2000;
 
-			assert.equal(null, fetchOldestCreep());
-			assert.equal(1, info.getLines().length);
-			assert.equal('🛑 No creep found.', info.getLine(0));
-		});
-	});
+            MainUtil.findAllCreeps = () => [ creep1, creep2, creep3 ];
 
-	describe('#spawnMiner', () => {
-		it('no spawn', () => {
-			var spawn = new Spawn();
-			spawn.name = 'Main';
-			spawn.room.energyAvailable = 50;
-			
-			var creep = spawnMiner(spawn.name, 'Source');
-			assert.equal(false, creep);
-		});
-		
-		it('spawn', () => {
-			var spawn = new Spawn();
-			spawn.name = 'Main';
-			spawn.room.energyAvailable = 300;
-			
-			var creep = spawnMiner(spawn.name, 'Source');
-			assert.notEqual(false, creep);
-			assert.equal(spawn.name, creep.memory.homeSpawn);
-			assert.equal('Source', creep.memory.source);
-			assert.equal(Game.creeps['Miner 1'], creep);
-			assert.deepEqual([MOVE, CARRY, WORK], creep.body);
+            assert.equal(creep2, fetchOldestCreep());
+            assert.equal(1, info.getLines().length);
+            assert.equal('Oldest creep: B (20 ttl)', info.getLine(0));
+        });
 
-			assert.equal(1, info.getLines().length);
-			assert.equal('🛒 Spawning new Miner (3p)', info.getLine(0));
-		});
+        it('without creep', () => {
+            MainUtil.findAllCreeps = () => [ ];
 
-		it('no spawn', () => {
-			var spawn = new Spawn();
-			spawn.room.energyAvailable = 77;
-			
-			var creep = spawnMiner('ABC');
-			assert.equal(false, creep);
-			
-			assert.equal(1, info.getLines().length);
-			assert.equal('🛑 Could not find spawn: ABC', info.getLine(0));
-		});
-	});
+            assert.equal(null, fetchOldestCreep());
+            assert.equal(1, info.getLines().length);
+            assert.equal('🛑 No creep found.', info.getLine(0));
+        });
+    });
 
-	describe('#spawnExplorer', () => {
-		it('no spawn', () => {
-			var spawn = new Spawn();
-			spawn.name = 'Main';
-			spawn.room.energyAvailable = 50;
-			
-			var creep = spawnExplorer(spawn.name, 'Flag');
-			assert.equal(false, creep);
-		});
-		
-		it('spawn', () => {
-			var spawn = new Spawn();
-			spawn.name = 'Main';
-			spawn.room.energyAvailable = 930;
-			
-			var creep = spawnExplorer(spawn.name, 'Flag');
-			assert.notEqual(false, creep);
-			assert.equal('Flag', creep.memory.target);
-			assert.equal(Game.creeps['Explorer 1'], creep);
-			assert.deepEqual([ CLAIM, MOVE, WORK, MOVE, CARRY, MOVE ], creep.body);
+    describe('#spawnMiner', () => {
+        it('no spawn', () => {
+            var spawn = new Spawn();
+            spawn.name = 'Main';
+            spawn.room.energyAvailable = 50;
 
-			assert.equal(1, info.getLines().length);
-			assert.equal('🏴 Spawning new Explorer (6p)', info.getLine(0));
-		});
+            var creep = spawnMiner(spawn.name, 'Source');
+            assert.equal(false, creep);
+        });
 
-		it('no spawn', () => {
-			var spawn = new Spawn();
-			spawn.room.energyAvailable = 77;
-			
-			var creep = spawnExplorer('ABC');
-			assert.equal(false, creep);
-			
-			assert.equal(1, info.getLines().length);
-			assert.equal('🛑 Could not find spawn: ABC', info.getLine(0));
-		});
-	});
+        it('spawn', () => {
+            var spawn = new Spawn();
+            spawn.name = 'Main';
+            spawn.room.energyAvailable = 300;
 
-	describe('#makeLinkTarget', () => {
-		it('no type present', () => {
-			var structure = structure = {
-				id: 'ID',
-			};
-			Game.getObjectById = id => structure;
-			
-			makeLinkTarget('ID');
-			
-			assert.equal(constants.LINK_TYPE_TARGET, structure.memory.type);
-			assert.equal(constants.LINK_TYPE_TARGET, Memory.structures.ID.type);
-		});
+            var creep = spawnMiner(spawn.name, 'Source');
+            assert.notEqual(false, creep);
+            assert.equal(spawn.name, creep.memory.homeSpawn);
+            assert.equal('Source', creep.memory.source);
+            assert.equal(Game.creeps['Miner 1'], creep);
+            assert.deepEqual([MOVE, CARRY, WORK], creep.body);
 
-		it('type already present', () => {
-			var structure = structure = {
-				id: 'ID',
-				memory: {
-					type: constants.LINK_TYPE_SOURCE,
-				},
-			};
-			Game.getObjectById = id => structure;
-			
-			makeLinkTarget('ID');
-			
-			assert.equal(constants.LINK_TYPE_TARGET, structure.memory.type);
-			assert.equal(constants.LINK_TYPE_TARGET, Memory.structures.ID.type);
-		});
-	});
+            assert.equal(1, info.getLines().length);
+            assert.equal('🛒 Spawning new Miner (3p)', info.getLine(0));
+        });
 
-	describe('#makeLinkSource', () => {
-		it('no type present', () => {
-			var structure = structure = {
-				id: 'ID',
-			};
-			Game.getObjectById = id => structure;
-			
-			makeLinkSource('ID');
-			
-			assert.equal(constants.LINK_TYPE_SOURCE, structure.memory.type);
-			assert.equal(constants.LINK_TYPE_SOURCE, Memory.structures.ID.type);
-		});
+        it('no spawn', () => {
+            var spawn = new Spawn();
+            spawn.room.energyAvailable = 77;
 
-		it('type already present', () => {
-			var structure = structure = {
-				id: 'ID',
-				memory: {
-					type: constants.LINK_TYPE_TARGET,
-				},
-			};
-			Game.getObjectById = id => structure;
-			
-			makeLinkSource('ID');
-			
-			assert.equal(constants.LINK_TYPE_SOURCE, structure.memory.type);
-			assert.equal(constants.LINK_TYPE_SOURCE, Memory.structures.ID.type);
-		});
-	});
+            var creep = spawnMiner('ABC');
+            assert.equal(false, creep);
 
-	describe('#spawnCreepForRoom', () => {
-		it('spawn', () => {
-			
-			var room = new Room();
-			room.memory.base = { name: 'A23D56' };
-			room.energyAvailable = 1000;
-			
-			var spawn = new Spawn(room);
-			spawn.memory.home = 'A23D56';
-			
-			var spawnedCreep = spawnCreepForRoom(room.name, 'Harvester');
-			assert.notEqual(false, spawnedCreep);
-			assert.equal('Harvester 1', spawnedCreep.name);
+            assert.equal(1, info.getLines().length);
+            assert.equal('🛑 Could not find spawn: ABC', info.getLine(0));
+        });
+    });
 
-			assert.equal(0, info.getLines().length);
-		});
+    describe('#spawnExplorer', () => {
+        it('no spawn', () => {
+            var spawn = new Spawn();
+            spawn.name = 'Main';
+            spawn.room.energyAvailable = 50;
 
-		it('spawn with debug', () => {
-			
-			var room = new Room();
-			room.memory.base = { name: 'A23D56' };
-			room.energyAvailable = 1000;
-			
-			var spawn = new Spawn(room);
-			spawn.memory.home = 'A23D56';
-			spawn.memory.debug = true;
-			
-			var spawnedCreep = spawnCreepForRoom(room.name, 'Harvester');
-			assert.notEqual(false, spawnedCreep);
-			assert.equal('Harvester 1', spawnedCreep.name);
+            var creep = spawnExplorer(spawn.name, 'Flag');
+            assert.equal(false, creep);
+        });
 
-			assert.equal(1, info.getLines().length);
-			assert.equal('🧺 Spawning new Harvester (12p)', info.getLine(0));
-		});
+        it('spawn', () => {
+            var spawn = new Spawn();
+            spawn.name = 'Main';
+            spawn.room.energyAvailable = 930;
 
-		it('no room found', () => {
+            var creep = spawnExplorer(spawn.name, 'Flag');
+            assert.notEqual(false, creep);
+            assert.equal('Flag', creep.memory.target);
+            assert.equal(Game.creeps['Explorer 1'], creep);
+            assert.deepEqual([ CLAIM, MOVE, WORK, MOVE, CARRY, MOVE ], creep.body);
 
-			var room = new Room();
-			room.memory.base = { name: 'A23D56' };
-			room.energyAvailable = 1000;
-			
-			var spawn = new Spawn(room);
-			spawn.memory.home = 'A23D56';
-			
-			var spawnedCreep = spawnCreepForRoom('other', 'Harvester');
-			assert.equal(false, spawnedCreep);
+            assert.equal(1, info.getLines().length);
+            assert.equal('🏴 Spawning new Explorer (6p)', info.getLine(0));
+        });
 
-			assert.equal(1, info.getLines().length);
-			assert.equal('🛑 Could not find room: other', info.getLine(0));
-		});
+        it('no spawn', () => {
+            var spawn = new Spawn();
+            spawn.room.energyAvailable = 77;
 
-		it('no role found', () => {
-			
-			var room = new Room();
-			room.memory.base = { name: 'A23D56' };
-			room.energyAvailable = 1000;
-			
-			var spawn = new Spawn(room);
-			spawn.memory.home = 'A23D56';
-			
-			var spawnedCreep = spawnCreepForRoom(room.name, '1234567890');
-			assert.equal(false, spawnedCreep);
+            var creep = spawnExplorer('ABC');
+            assert.equal(false, creep);
 
-			assert.equal(1, info.getLines().length);
-			assert.equal('🛑 Could not find role: 1234567890', info.getLine(0));
-		});
-	});
+            assert.equal(1, info.getLines().length);
+            assert.equal('🛑 Could not find spawn: ABC', info.getLine(0));
+        });
+    });
 
-	describe('#moveCreepTo', () => {
-		it('move', () => {
-			
-			var creep = new Creep('run');
-	
-			var gameObject = new Spawn();
-			gameObject.pos.x = 13;
-			gameObject.pos.y = 42;
-	
-			Game.getObjectById = id => id == gameObject.id ? gameObject : null;
-			
-			moveCreepTo(creep.id, gameObject.id);
-	
-			assert.equal(gameObject.id, creep.memory.moveToGameObject);
-		});
+    describe('#makeLinkTarget', () => {
+        it('no type present', () => {
+            var structure = structure = {
+                id: 'ID',
+            };
+            Game.getObjectById = id => structure;
 
-		it('no creep', () => {
-			
-			var gameObject = new Spawn();
-			gameObject.pos.x = 13;
-			gameObject.pos.y = 42;
-	
-			Game.getObjectById = id => id == gameObject.id ? gameObject : null;
-			
-			moveCreepTo('unknown', gameObject.id);
-	
-			assert.equal(1, info.getLines().length);
-			assert.equal('🛑 Could not find creep: unknown', info.getLine(0));
-		});
-		
-		it('no game object', () => {
-			
-			var creep = new Creep('run');
-	
-			Game.getObjectById = id => null;
-			
-			moveCreepTo(creep.id, 'unknown');
+            makeLinkTarget('ID');
 
-			assert.equal(1, info.getLines().length);
-			assert.equal('🛑 Could not find game object: unknown', info.getLine(0));
-		});
-	});
+            assert.equal(constants.LINK_TYPE_TARGET, structure.memory.type);
+            assert.equal(constants.LINK_TYPE_TARGET, Memory.structures.ID.type);
+        });
 
-	describe('#clearConsole', () => {
-		it('simple', () => {
-			info.log('A');
-			info.log('B');
-			info.log('C');
+        it('type already present', () => {
+            var structure = structure = {
+                id: 'ID',
+                memory: {
+                    type: constants.LINK_TYPE_SOURCE,
+                },
+            };
+            Game.getObjectById = id => structure;
 
-			clearConsole();
+            makeLinkTarget('ID');
 
-			assert.equal(info.getLines().length, 0);
-		});
-	});
-	
-	describe('#generateLayoutForRoom', () => {
-		it('default', () => {
-			var spawn = new Spawn();
-			spawn.pos.x = 1;
-			spawn.pos.y = 1;
-			
-			var room = new Room();
-			room.lookAt = (x, y) => {
-				if (x == spawn.pos.x && y == spawn.pos.y) {
-					return [ { type: LOOK_STRUCTURES, structure: spawn } ];
-				}
-				if (x == 0) {
-					return [ { type: LOOK_TERRAIN,  terrain: 'wall' } ];
-				}
-				if (x == 2) {
-					return [ { type: LOOK_TERRAIN,  terrain: 'swamp' } ];
-				}
-				return [ { type: LOOK_TERRAIN,  terrain: 'plain' } ];
-			}
-			room.find = () => [ spawn ];
+            assert.equal(constants.LINK_TYPE_TARGET, structure.memory.type);
+            assert.equal(constants.LINK_TYPE_TARGET, Memory.structures.ID.type);
+        });
+    });
 
-			var layout = generateLayoutForRoom(room.name, new TileArray(5, 3));
+    describe('#makeLinkSource', () => {
+        it('no type present', () => {
+            var structure = structure = {
+                id: 'ID',
+            };
+            Game.getObjectById = id => structure;
 
-			var compactString = 
-				"█ o o" +
-				"█S~o " + 
-				"█ o o";
-	
-			assert.notEqual(undefined, layout);
-			assert.equal(compactString, layout);
-			assert.equal(compactString, room.memory.roomManager.layout);
-			
-			assert.equal(0, info.getLines().length);
-		});
+            makeLinkSource('ID');
 
-		it('no room found', () => {
-			var layout = generateLayoutForRoom('Other');
-			assert.equal(false, layout);
+            assert.equal(constants.LINK_TYPE_SOURCE, structure.memory.type);
+            assert.equal(constants.LINK_TYPE_SOURCE, Memory.structures.ID.type);
+        });
 
-			assert.equal(1, info.getLines().length);
-			assert.equal('🛑 Could not find room: Other', info.getLine(0));
-		});
-	});
+        it('type already present', () => {
+            var structure = structure = {
+                id: 'ID',
+                memory: {
+                    type: constants.LINK_TYPE_TARGET,
+                },
+            };
+            Game.getObjectById = id => structure;
+
+            makeLinkSource('ID');
+
+            assert.equal(constants.LINK_TYPE_SOURCE, structure.memory.type);
+            assert.equal(constants.LINK_TYPE_SOURCE, Memory.structures.ID.type);
+        });
+    });
+
+    describe('#spawnCreepForRoom', () => {
+        it('spawn', () => {
+
+            var room = new Room();
+            room.memory.base = { name: 'A23D56' };
+            room.energyAvailable = 1000;
+
+            var spawn = new Spawn(room);
+            spawn.memory.home = 'A23D56';
+
+            var spawnedCreep = spawnCreepForRoom(room.name, 'Harvester');
+            assert.notEqual(false, spawnedCreep);
+            assert.equal('Harvester 1', spawnedCreep.name);
+
+            assert.equal(0, info.getLines().length);
+        });
+
+        it('spawn with debug', () => {
+
+            var room = new Room();
+            room.memory.base = { name: 'A23D56' };
+            room.energyAvailable = 1000;
+
+            var spawn = new Spawn(room);
+            spawn.memory.home = 'A23D56';
+            spawn.memory.debug = true;
+
+            var spawnedCreep = spawnCreepForRoom(room.name, 'Harvester');
+            assert.notEqual(false, spawnedCreep);
+            assert.equal('Harvester 1', spawnedCreep.name);
+
+            assert.equal(1, info.getLines().length);
+            assert.equal('🧺 Spawning new Harvester (12p)', info.getLine(0));
+        });
+
+        it('no room found', () => {
+
+            var room = new Room();
+            room.memory.base = { name: 'A23D56' };
+            room.energyAvailable = 1000;
+
+            var spawn = new Spawn(room);
+            spawn.memory.home = 'A23D56';
+
+            var spawnedCreep = spawnCreepForRoom('other', 'Harvester');
+            assert.equal(false, spawnedCreep);
+
+            assert.equal(1, info.getLines().length);
+            assert.equal('🛑 Could not find room: other', info.getLine(0));
+        });
+
+        it('no role found', () => {
+
+            var room = new Room();
+            room.memory.base = { name: 'A23D56' };
+            room.energyAvailable = 1000;
+
+            var spawn = new Spawn(room);
+            spawn.memory.home = 'A23D56';
+
+            var spawnedCreep = spawnCreepForRoom(room.name, '1234567890');
+            assert.equal(false, spawnedCreep);
+
+            assert.equal(1, info.getLines().length);
+            assert.equal('🛑 Could not find role: 1234567890', info.getLine(0));
+        });
+    });
+
+    describe('#moveCreepTo', () => {
+        it('move', () => {
+
+            var creep = new Creep('run');
+
+            var gameObject = new Spawn();
+            gameObject.pos.x = 13;
+            gameObject.pos.y = 42;
+
+            Game.getObjectById = id => id == gameObject.id ? gameObject : null;
+
+            moveCreepTo(creep.id, gameObject.id);
+
+            assert.equal(gameObject.id, creep.memory.moveToGameObject);
+        });
+
+        it('no creep', () => {
+
+            var gameObject = new Spawn();
+            gameObject.pos.x = 13;
+            gameObject.pos.y = 42;
+
+            Game.getObjectById = id => id == gameObject.id ? gameObject : null;
+
+            moveCreepTo('unknown', gameObject.id);
+
+            assert.equal(1, info.getLines().length);
+            assert.equal('🛑 Could not find creep: unknown', info.getLine(0));
+        });
+
+        it('no game object', () => {
+
+            var creep = new Creep('run');
+
+            Game.getObjectById = id => null;
+
+            moveCreepTo(creep.id, 'unknown');
+
+            assert.equal(1, info.getLines().length);
+            assert.equal('🛑 Could not find game object: unknown', info.getLine(0));
+        });
+    });
+
+    describe('#clearConsole', () => {
+        it('simple', () => {
+            info.log('A');
+            info.log('B');
+            info.log('C');
+
+            clearConsole();
+
+            assert.equal(info.getLines().length, 0);
+        });
+    });
+
+    describe('#generateLayoutForRoom', () => {
+        it('default', () => {
+            var spawn = new Spawn();
+            spawn.pos.x = 1;
+            spawn.pos.y = 1;
+
+            var room = new Room();
+            room.lookAt = (x, y) => {
+                if (x == spawn.pos.x && y == spawn.pos.y) {
+                    return [ { type: LOOK_STRUCTURES, structure: spawn } ];
+                }
+                if (x == 0) {
+                    return [ { type: LOOK_TERRAIN,  terrain: 'wall' } ];
+                }
+                if (x == 2) {
+                    return [ { type: LOOK_TERRAIN,  terrain: 'swamp' } ];
+                }
+                return [ { type: LOOK_TERRAIN,  terrain: 'plain' } ];
+            }
+            room.find = () => [ spawn ];
+
+            var layout = generateLayoutForRoom(room.name, new TileArray(5, 3));
+
+            var compactString =
+                "█ o o" +
+                "█S~o " +
+                "█ o o";
+
+            assert.notEqual(undefined, layout);
+            assert.equal(compactString, layout);
+            assert.equal(compactString, room.memory.roomManager.layout);
+
+            assert.equal(0, info.getLines().length);
+        });
+
+        it('no room found', () => {
+            var layout = generateLayoutForRoom('Other');
+            assert.equal(false, layout);
+
+            assert.equal(1, info.getLines().length);
+            assert.equal('🛑 Could not find room: Other', info.getLine(0));
+        });
+    });
 });

@@ -17,24 +17,24 @@ global.RESOURCE_CATALYST = 'X';
 global.RESOURCE_GHODIUM = 'G';
 
 class Store {
-	
-	constructor(capacity, usedCapacity = 0) {
-		this.usedCapacity = usedCapacity;
-		this.capacity = capacity;
-	}
 
-	getCapacity(resource) {
-		return this.capacity;
-	}
+    constructor(capacity, usedCapacity = 0) {
+        this.usedCapacity = usedCapacity;
+        this.capacity = capacity;
+    }
 
-	getFreeCapacity(resource) {
-		return this.capacity - this.usedCapacity;
-	}
+    getCapacity(resource) {
+        return this.capacity;
+    }
 
-	getUsedCapacity(resource) {
-		return this.usedCapacity;
-	}
-	
+    getFreeCapacity(resource) {
+        return this.capacity - this.usedCapacity;
+    }
+
+    getUsedCapacity(resource) {
+        return this.usedCapacity;
+    }
+
 }
 
 module.exports = Store;

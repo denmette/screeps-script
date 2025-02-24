@@ -8,15 +8,15 @@ var RolePrototype = require('./role.prototype');
  
 class Harvester extends RolePrototype {
 
-	constructor() {
-		super('Harvester', '#ffffff', '🧺');
-	    this.priority = 100; 
-	}
+    constructor() {
+        super('Harvester', '#ffffff', '🧺');
+        this.priority = 100;
+    }
 
-	/*
-	 * Just transfer energy between source and and the targets.
-	 */
-	
+    /*
+     * Just transfer energy between source and and the targets.
+     */
+
     _work(creep) {
         this._commuteBetweenSourceAndTarget(creep, target =>  creep.transfer(target, RESOURCE_ENERGY));
     }

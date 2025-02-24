@@ -95,18 +95,18 @@ global.CONTROLLER_STRUCTURES = {
 
 class Room {
 
-	constructor() {
-		this.name = 'Room' + Game.rooms.length;
-	    Game.rooms[this.name] = this;
-			
-	    this.memory = Memory.rooms[this.id] = {};
-	    this.visual = new RoomVisual();
-	    this.energyAvailable = 0;
-	}
-	
-	find(type, opts = {}) {
-		return [];
-	}
+    constructor() {
+        this.name = 'Room' + Game.rooms.length;
+        Game.rooms[this.name] = this;
+
+        this.memory = Memory.rooms[this.id] = {};
+        this.visual = new RoomVisual();
+        this.energyAvailable = 0;
+    }
+
+    find(type, opts = {}) {
+        return [];
+    }
 }
 
 module.exports = Room;
