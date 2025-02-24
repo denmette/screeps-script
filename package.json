@@ -21,6 +21,6 @@
   "homepage": "https://github.com/slothsoft/screeps-script#readme",
   "devDependencies": {
     "@slothsoft/qunit-reporter": "^0.2.0",
-    "mocha": "^8.2.1"
+    "mocha": "^11.0.0"
   }
 }
