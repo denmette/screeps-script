@@ -16,7 +16,7 @@ var Handman = require("./role.handyman");
 var Explorer = require("./role.explorer");
 var Miner = require("./role.miner");
 var StoreKeeper = require("./role.storekeeper");
-var InvaderHunter = require("./role.hunter");
+var Defender = require("./role.defender");
 
 var MemoryManager = require("./manager.memory");
 
@@ -43,7 +43,7 @@ class BaseManager {
       new Miner(),
       new StoreKeeper(),
       new Courier(),
-      new InvaderHunter(),
+      new Defender(),
     ].sort((a, b) => b.priority - a.priority);
   }
 
@@ -78,10 +78,12 @@ class BaseManager {
           creep.memory.role == role.roleName && creep.memory.home == baseName,
       );
 
+      // Check if the number of creeps for the role is less than required
       if (
         foundCreeps.length <
         MemoryManager.getRequiredNumberForRoomAndRole(this._room, role.roleName)
       ) {
+        // If less, spawn a new creep for the role
         if (this._spawnCreepForRole(role)) {
           alreadySpawned = true;
         }
