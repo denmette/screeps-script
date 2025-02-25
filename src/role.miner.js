@@ -5,9 +5,6 @@
 
 var info = require("./main.info");
 var MainUtil = require("./main.util");
-
-var MemoryManager = require("./manager.memory");
-
 var RolePrototype = require("./role.prototype");
 
 class Miner extends RolePrototype {
@@ -108,7 +105,7 @@ class Miner extends RolePrototype {
     // we know how long it took this creep to the resource
     // so we need to retrain our replacement before we die
     if (creep.memory.ticksToSource && !creep.memory.trainedReplacement) {
-      var timeToSpawn = (this._getPartsMaxMultiplier() + 2) * 3; // one part tacks 3 ticks
+      var timeToSpawn = (this._getPartsMaxMultiplier() + 2) * 3; // one part takes 3 ticks
       var ticksToGetReady =
         creep.memory.initialTicksToLive -
         creep.memory.ticksToSource +

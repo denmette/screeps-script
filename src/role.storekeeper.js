@@ -5,7 +5,6 @@
  */
 
 var MainUtil = require("./main.util");
-var info = require("./main.info");
 
 var RolePrototype = require("./role.prototype");
 
