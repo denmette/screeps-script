@@ -47,7 +47,7 @@ class RolePrototype {
    * Return true if a creep with this role would have work to do, i.e. if the
    * role is currently _really_ necessary.
    *
-   * @param {Room} room
+   * @param {Room} room the given room
    */
   isNecessary(room) {
     if (!room.memory.base.roleConfig[this.roleName].requiredNumber) {
@@ -62,7 +62,7 @@ class RolePrototype {
    * Returns the primary target for the creep, e.g. energy stores for
    * harvester and construction sites for builders.
    *
-   * @param {Room} room
+   * @param {Room} room the given roo,
    */
   _findTargets(room) {
     return [];
@@ -72,7 +72,7 @@ class RolePrototype {
    * Returns the closest primary target for the creep, e.g. energy stores for
    * harvester and construction sites for builders.
    *
-   * @param {Creep} creep
+   * @param {Creep} creep the given creep
    */
   _findClosestTarget(creep) {
     var specificTarget;
@@ -129,7 +129,8 @@ class RolePrototype {
    * Sorts the targets so the closest is first. If there are other things to
    * take into consideration, this function is overriden.
    *
-   * @param {Creep} creep
+   * @param targets the targets to sort
+   * @param {Creep} creep to sort for
    */
   _sortTargetForClosest(targets, creep) {
     return targets.sort(
@@ -141,7 +142,8 @@ class RolePrototype {
    * Moves a creep to its closest primary target, e.g. energy stores for
    * harvester and construction sites for builders.
    *
-   * @param {Creep} creep @param function the work that should be done there
+   * @param {Creep} creep 
+   * @param function the work that should be done there
    */
   _moveToClosestTarget(creep, work) {
     var target = this._findClosestTarget(creep);
@@ -180,7 +182,8 @@ class RolePrototype {
   /**
    * Handles result of work on target.
    *
-   * @param {Creep} creep @param work result
+   * @param {Creep} creep 
+   * @param work result
    */
   _handleTargetWorkResult(creep, workResult) {
     info.warning(
@@ -188,10 +191,11 @@ class RolePrototype {
     );
   }
 
-  /*
+  /**
    * Moves a creep to a location.
    *
-   * @param {Creep} creep @param location
+   * @param {Creep} creep 
+   * @param location
    */
   _moveToLocation(creep, location) {
     creep.moveTo(location, { visualizePathStyle: { stroke: this.color } });
@@ -355,7 +359,8 @@ class RolePrototype {
   /**
    * Handles result of harvest on source.
    *
-   * @param {Creep} creep @param harvest result
+   * @param {Creep} creep 
+   * @param harvest result
    */
   _handleSourceWorkResult(creep, harvestResult) {
     info.warning(
@@ -440,19 +445,19 @@ class RolePrototype {
     }
 
     // TOOD: looting ruins and graves (if they have the resource) might be a good idea, too
-    //          var ruin = creep.pos.findInRange(FIND_RUINS, 3);
-    //          if (ruin.length > 0 && creep.store.getFreeCapacity() > 0) {
-    //              if (creep.memory.debug) {
-    //                  info.log('⚰ ' + MainUtil.getDisplayName(creep) + ' is looting ruin ' + MainUtil.getDisplayName(dropenergy[0]), this._baseRoom);
-    //              }
-    //              var withdrawAnswer = creep.withdraw(ruin[0], RESOURCE_ENERGY);
-    //              if (withdrawAnswer == ERR_NOT_IN_RANGE) {
-    //                  creep.moveTo(ruin[0])
-    //                  return;
-    //              }
-    //              console.log(withdrawAnswer);
-    //              return;
-    //          }
+    var ruin = creep.pos.findInRange(FIND_RUINS, 3);
+    if (ruin.length > 0 && creep.store.getFreeCapacity() > 0) {
+      if (creep.memory.debug) {
+        info.log('⚰ ' + MainUtil.getDisplayName(creep) + ' is looting ruin ' + MainUtil.getDisplayName(dropenergy[0]), this._baseRoom);
+      }
+      var withdrawAnswer = creep.withdraw(ruin[0], RESOURCE_ENERGY);
+      if (withdrawAnswer == ERR_NOT_IN_RANGE) {
+        creep.moveTo(ruin[0])
+        return;
+      }
+      console.log(withdrawAnswer);
+      return;
+    }
 
     this._work(creep);
   }
