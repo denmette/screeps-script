@@ -1,4 +1,4 @@
-/*
+/**
  * Harvesters collect resources that can be used to do stuff.
  */
 
@@ -12,20 +12,18 @@ class Harvester extends RolePrototype {
     this.priority = 100;
   }
 
-  /*
+  /**
    * Just transfer energy between source and and the targets.
    */
-
   _work(creep) {
     this._commuteBetweenSourceAndTarget(creep, (target) =>
       creep.transfer(target, RESOURCE_ENERGY),
     );
   }
 
-  /*
+  /**
    * Valid targets are everything where energy can be stored.
    */
-
   _findTargets(room) {
     return room.find(FIND_MY_STRUCTURES, {
       filter: (structure) => {

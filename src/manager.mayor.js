@@ -163,6 +163,14 @@ class MayorManager {
       });
       return;
     }
+    if (this._room.memory.base.roleConfig.Harvester.requiredNumber == 0) {
+      this.errors.push({
+        text: "Harvester is missing.",
+        solution: "Spawning Harvester.",
+        act: () => this._spawnOnlyHarvesters(),
+      });
+      return;
+    }
     if (this._room.memory.base.roleConfig.Upgrader.requiredNumber == 0) {
       this.errors.push({
         text: "Upgrader is missing.",

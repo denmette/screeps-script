@@ -1,4 +1,4 @@
-/*
+/**
  * Miners cannot move or carry stuff, but they are very good at harvesting stuff.
  * So have a container or storage ready for him to use.
  */
@@ -23,11 +23,10 @@ class Miner extends RolePrototype {
     return true;
   }
 
-  /*
+  /**
    * This method is called by the framework, so we need to find an open
    * source for the creep to attach to.
    */
-
   spawnCreep(spawn) {
     var claimedSources = MainUtil.findAllCreeps()
       .filter((creep) => creep.memory.role == "Miner")
@@ -85,11 +84,10 @@ class Miner extends RolePrototype {
     return resultingCreep;
   }
 
-  /*
+  /**
    * A source has 3000 energy and respawns in 300 ticks. So we will never need to harvest more than
    * 10 energy per tick which is 5 WORK parts.
    */
-
   _getPartsMaxMultiplier(spawn) {
     return 6; // fixes some rounding errors
   }

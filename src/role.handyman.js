@@ -1,4 +1,4 @@
-/*
+/**
  * Handymen repair buildings.
  */
 
@@ -9,20 +9,18 @@ class Handyman extends RolePrototype {
     super("Handyman", "#0000ff", "🔧");
   }
 
-  /*
+  /**
    * Just transfer energy between source and and the broken structures.
    */
-
   _work(creep) {
     this._commuteBetweenSourceAndTarget(creep, (target) =>
       creep.repair(target),
     );
   }
 
-  /*
+  /**
    * Valid targets are all broken structures.
    */
-
   _findTargets(room) {
     var necessaryDamageInPercent = 0.95;
 
@@ -41,7 +39,7 @@ class Handyman extends RolePrototype {
       return results;
     }
 
-    // 2nd priority: freshly build  walls (max hits: 300M) & ramparts (max hits: 30M)
+    // 2nd priority: freshly build walls (max hits: 300M) & ramparts (max hits: 30M)
 
     var results = room.find(FIND_STRUCTURES, {
       filter: (structure) => {
@@ -73,7 +71,6 @@ class Handyman extends RolePrototype {
   /*
    * Takes the closest to creep and closest to completion.
    */
-
   _sortTargetForClosest(targets, creep) {
     var result = targets.sort(
       (a, b) => a.hits / a.hitsMax - b.hits / b.hitsMax,

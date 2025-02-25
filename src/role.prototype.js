@@ -1,4 +1,4 @@
-/*
+/**
  * This code is shared between the roles. It has standard behavior like:
  * - basic fields & methods
  * - moving to an appropriate source
@@ -36,21 +36,19 @@ class RolePrototype {
     this._sourceMode = RolePrototype.SOURCE_MODE_USE_OR_WAIT;
   }
 
-  /*
+  /**
    * Creates a single creep for this role.
    */
-
   spawnCreep(spawn) {
     return this._spawnCreepWithParts(spawn, [WORK, CARRY, MOVE, MOVE]);
   }
 
-  /*
+  /**
    * Return true if a creep with this role would have work to do, i.e. if the
    * role is currently _really_ necessary.
    *
    * @param {Room} room
    */
-
   isNecessary(room) {
     if (!room.memory.base.roleConfig[this.roleName].requiredNumber) {
       // if this role is not required, it's not necessary either
@@ -60,24 +58,22 @@ class RolePrototype {
     return targets && targets.length > 0;
   }
 
-  /*
+  /**
    * Returns the primary target for the creep, e.g. energy stores for
    * harvester and construction sites for builders.
    *
    * @param {Room} room
    */
-
   _findTargets(room) {
     return [];
   }
 
-  /*
+  /**
    * Returns the closest primary target for the creep, e.g. energy stores for
    * harvester and construction sites for builders.
    *
    * @param {Creep} creep
    */
-
   _findClosestTarget(creep) {
     var specificTarget;
     if (creep.memory.target) {
@@ -129,26 +125,24 @@ class RolePrototype {
     return null;
   }
 
-  /*
+  /**
    * Sorts the targets so the closest is first. If there are other things to
    * take into consideration, this function is overriden.
    *
    * @param {Creep} creep
    */
-
   _sortTargetForClosest(targets, creep) {
     return targets.sort(
       (a, b) => creep.pos.getRangeTo(a) - creep.pos.getRangeTo(b),
     );
   }
 
-  /*
+  /**
    * Moves a creep to its closest primary target, e.g. energy stores for
    * harvester and construction sites for builders.
    *
    * @param {Creep} creep @param function the work that should be done there
    */
-
   _moveToClosestTarget(creep, work) {
     var target = this._findClosestTarget(creep);
 
@@ -183,12 +177,11 @@ class RolePrototype {
     }
   }
 
-  /*
+  /**
    * Handles result of work on target.
    *
    * @param {Creep} creep @param work result
    */
-
   _handleTargetWorkResult(creep, workResult) {
     info.warning(
       MainUtil.getDisplayName(creep) + " cannot work: " + workResult,
@@ -200,18 +193,16 @@ class RolePrototype {
    *
    * @param {Creep} creep @param location
    */
-
   _moveToLocation(creep, location) {
     creep.moveTo(location, { visualizePathStyle: { stroke: this.color } });
     creep.memory.moving = true;
   }
 
-  /*
+  /**
    * Moves a creep to a source.
    *
    * @param {Creep} creep
    */
-
   _moveToClosestSource(creep) {
     // TODO: if source is empty, just go back to working
     var source = this._findClosestSource(creep);
@@ -250,12 +241,11 @@ class RolePrototype {
     return harvestResult;
   }
 
-  /*
+  /**
    * Returns the closest source for the creep, e.g. sources or storages.
    *
    * @param {Creep} creep
    */
-
   _findClosestSource(creep) {
     var specificSource;
     if (creep.memory.source) {
@@ -307,26 +297,24 @@ class RolePrototype {
     return null;
   }
 
-  /*
+  /**
    * Sorts the sources so the closest is first. If there are other things to
    * take into consideration, this function is overriden.
    *
    * @param {Creep} creep
    */
-
   _sortSourceForClosest(sources, creep) {
     return sources.sort(
       (a, b) => creep.pos.getRangeTo(a) - creep.pos.getRangeTo(b),
     );
   }
 
-  /*
+  /**
    * Returns the primary target for the creep, e.g. energy stores for
    * harvester and construction sites for builders.
    *
    * @param {Room} room
    */
-
   _findSources(room) {
     var storages = this._useStorageAsSource
       ? room.find(FIND_STRUCTURES, {
@@ -364,26 +352,24 @@ class RolePrototype {
     return storages.concat(sources);
   }
 
-  /*
+  /**
    * Handles result of harvest on source.
    *
    * @param {Creep} creep @param harvest result
    */
-
   _handleSourceWorkResult(creep, harvestResult) {
     info.warning(
       MainUtil.getDisplayName(creep) + " cannot harvest: " + harvestResult,
     );
   }
 
-  /*
+  /**
    * Creep AI gets run. Creep might decide working is not in its best
    * interest.
    *
    * @param {Creep} creep
    * @param baseRoom
    */
-
   run(creep, baseRoom = RolePrototype._fetchBaseRoomForCreep(creep)) {
     this._creep = creep;
     this._baseRoom = baseRoom;
@@ -471,12 +457,11 @@ class RolePrototype {
     this._work(creep);
   }
 
-  /*
+  /**
    * Creep self-destructs or tries to anyway.
    *
    * @param {Creep} creep
    */
-
   _selfdestruct(creep) {
     var spawn = creep.pos.findClosestByPath(FIND_MY_SPAWNS);
     if (spawn) {
@@ -508,23 +493,21 @@ class RolePrototype {
     }
   }
 
-  /*
+  /**
    * Finds the room of the creep's base.
    *
    * @param {Creep} creep
    */
-
   static _fetchBaseRoomForCreep(creep) {
     var baseRoom = RolePrototype._fetchBaseRoomForName(creep.memory.home);
     return baseRoom ? baseRoom : creep.room;
   }
 
-  /*
+  /**
    * Finds the room for the base namse.
    *
    * @param baseName
    */
-
   static _fetchBaseRoomForName(baseName) {
     var allRooms = MainUtil.findAllRooms();
     var baseRooms = allRooms
@@ -538,12 +521,11 @@ class RolePrototype {
     return null;
   }
 
-  /*
+  /**
    * Creep loots the tombstone.
    *
    * @param {Creep} creep
    */
-
   _lootTombstone(creep, tombstone) {
     var withdrawResult = creep.withdraw(tombstone, RESOURCE_ENERGY);
     if (withdrawResult == ERR_NOT_IN_RANGE) {
@@ -578,24 +560,22 @@ class RolePrototype {
     }
   }
 
-  /*
+  /**
    * Creep works.
    *
    * @param {Creep} creep
    */
-
   _work(creep) {
     // do nothing on default
     creep.say("🛑 unimplemented 🛑");
   }
 
-  /*
+  /**
    * Creep goes to source until full, then works till it's empty and starts
    * over.
    *
    * @param {Creep} creep @param function the work that should be done there
    */
-
   _commuteBetweenSourceAndTarget(creep, work) {
     if (creep.memory.working && creep.store.getUsedCapacity() == 0) {
       creep.memory.working = false;
@@ -611,14 +591,13 @@ class RolePrototype {
     }
   }
 
-  /*
+  /**
    * Spawns a creep that has the needed parts (or many of them) and a single
    * part of some other type.
    *
-   * @param {Spawn} spawn @param parts to duplicate @param singleParts that
-   * are added as is
+   * @param {Spawn} spawn @param parts to duplicate 
+   * @param singleParts that are added as is
    */
-
   _spawnCreepWithParts(spawn, parts, singleParts = []) {
     var parts = this._calculateMaxParts(spawn, parts, singleParts);
     if (parts) {
@@ -638,13 +617,12 @@ class RolePrototype {
 
   // after this point, the rest are only helper methods
 
-  /*
+  /**
    * Calculate the max parts we can afford.
    *
    * @param {Spawn} spawn @param parts to duplicate @param singleParts that
    * are added as is
    */
-
   _calculateMaxParts(spawn, parts = [], singleParts = []) {
     var costs = this._calculateCostsForParts(parts);
 
@@ -675,12 +653,11 @@ class RolePrototype {
       : this._replicateParts(parts, multiplier);
   }
 
-  /*
+  /**
    * Returns the minimum multiplier for the parts for this role.
    *
    * @param {Spawn} spawn
    */
-
   _getPartsMinMultiplier(spawn) {
     return (
       (spawn.room.memory.base &&
@@ -690,12 +667,11 @@ class RolePrototype {
     );
   }
 
-  /*
+  /**
    * Returns the maximum multiplier for the parts for this role.
    *
    * @param {Spawn} spawn
    */
-
   _getPartsMaxMultiplier(spawn) {
     return (
       (spawn.room.memory.base &&
@@ -705,12 +681,11 @@ class RolePrototype {
     );
   }
 
-  /*
+  /**
    * Calculates the costs for the parts in the array.
    *
    * @param parts array
    */
-
   _calculateCostsForParts(parts) {
     var result = 0;
     parts.forEach(
@@ -719,23 +694,21 @@ class RolePrototype {
     return result;
   }
 
-  /*
+  /**
    * Calculates the costs for a single part.
    *
    * @param part
    */
-
   _calculateCostsForSinglePart(part) {
     return BODYPART_COST[part];
   }
 
-  /*
+  /**
    * Creates a new array and puts the parts array in there a specific amount
    * of times.
    *
    * @param part array @param multiplier how often to replicate the array
    */
-
   _replicateParts(parts, multiplier) {
     var result = [];
     for (var i = 0; i < multiplier; i++) {

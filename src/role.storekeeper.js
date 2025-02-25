@@ -1,4 +1,4 @@
-/*
+/**
  * Storekeepers are great runners with good carry abilities, but they can't work.
  * They take energy from containers and storages and distribute them to extensions etc.
  * like a harvester.

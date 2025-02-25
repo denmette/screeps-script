@@ -191,7 +191,7 @@ describe("main.info", () => {
       MainInfo._visualizeRoleInfos(room);
 
       assert.notEqual(undefined, room.visual.elements);
-      assert.equal("Hello World    4/10🟡", room.visual.elements[0][0]);
+      assert.equal("Hello World    4/10 🟡", room.visual.elements[0][0]);
       assert.equal(null, room.visual.elements[0][1]);
     });
     it("current and required", () => {
@@ -211,7 +211,7 @@ describe("main.info", () => {
       MainInfo._visualizeRoleInfos(room);
 
       assert.notEqual(undefined, room.visual.elements);
-      assert.equal("Hello World    4/10🟡", room.visual.elements[0][0]);
+      assert.equal("Hello World    4/10 🟡", room.visual.elements[0][0]);
       assert.equal("! Role 1/2", room.visual.elements[0][1]);
       assert.equal(null, room.visual.elements[0][2]);
     });
@@ -232,7 +232,7 @@ describe("main.info", () => {
       MainInfo._visualizeRoleInfos(room);
 
       assert.notEqual(undefined, room.visual.elements);
-      assert.equal("Hello World    4/10🟡", room.visual.elements[0][0]);
+      assert.equal("Hello World    4/10 🟡", room.visual.elements[0][0]);
       assert.equal("! Role 1/0", room.visual.elements[0][1]);
       assert.equal(null, room.visual.elements[0][2]);
     });
@@ -253,7 +253,7 @@ describe("main.info", () => {
       MainInfo._visualizeRoleInfos(room);
 
       assert.notEqual(undefined, room.visual.elements);
-      assert.equal("Hello World    4/10🟡", room.visual.elements[0][0]);
+      assert.equal("Hello World    4/10 🟡", room.visual.elements[0][0]);
       assert.equal("! Role 0/2", room.visual.elements[0][1]);
       assert.equal(null, room.visual.elements[0][2]);
     });
@@ -274,7 +274,7 @@ describe("main.info", () => {
       MainInfo._visualizeRoleInfos(room);
 
       assert.notEqual(undefined, room.visual.elements);
-      assert.equal("Hello World    4/10🟡", room.visual.elements[0][0]);
+      assert.equal("Hello World    4/10 🟡", room.visual.elements[0][0]);
       assert.equal("! 0/0", room.visual.elements[0][1]);
       assert.equal(null, room.visual.elements[0][2]);
     });
@@ -295,7 +295,7 @@ describe("main.info", () => {
       MainInfo._visualizeRoleInfos(room);
 
       assert.notEqual(undefined, room.visual.elements);
-      assert.equal("Hello World    4/10🟡", room.visual.elements[0][0]);
+      assert.equal("Hello World    4/10 🟡", room.visual.elements[0][0]);
       assert.equal("! Role 1", room.visual.elements[0][1]);
       assert.equal(null, room.visual.elements[0][2]);
     });
@@ -314,7 +314,7 @@ describe("main.info", () => {
       MainInfo._visualizeRoleInfos(room);
 
       assert.notEqual(undefined, room.visual.elements);
-      assert.equal("Hello World    4/10🟡", room.visual.elements[0][0]);
+      assert.equal("Hello World    4/10 🟡", room.visual.elements[0][0]);
       assert.equal("! 0", room.visual.elements[0][1]);
       assert.equal(null, room.visual.elements[0][2]);
     });
@@ -328,7 +328,7 @@ describe("main.info", () => {
       MainInfo._visualizeRoleInfos(room);
 
       assert.notEqual(undefined, room.visual.elements);
-      assert.equal("Hello World    4/10🟡", room.visual.elements[0][0]);
+      assert.equal("Hello World    4/10 🟡", room.visual.elements[0][0]);
       assert.equal(null, room.visual.elements[0][1]);
     });
   });

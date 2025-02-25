@@ -1,4 +1,4 @@
-/*
+/**
  * An explorer goes straight to the next flag, conquers it and starts
  * a new base there.
  */
@@ -29,7 +29,7 @@ class Explorer extends RolePrototype {
     return MainUtil.findAllFlags();
   }
 
-  /*
+  /**
    * This method is called by the framework, so we need to find an open
    * flag for the creep to attach to.
    */
@@ -114,7 +114,7 @@ class Explorer extends RolePrototype {
     }
   }
 
-  /*
+  /**
    * Find the correct flag to go to
    */
 
@@ -160,7 +160,7 @@ class Explorer extends RolePrototype {
     }
   }
 
-  /*
+  /**
    * Claim the flag's room
    */
 

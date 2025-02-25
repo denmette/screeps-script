@@ -1,14 +1,14 @@
-/*
+/**
  * This module is used to display some information to the screen, so debugging is easier.
  */
 
 var MainUtil = require("./main.util");
 
 class MainInfo {
-  /*
+
+  /**
    * Displays the collected information on the screen.
    */
-
   static visualize() {
     MainUtil.findAllRooms().forEach((room) => {
       this._visualizeRoleInfos(room);
@@ -16,12 +16,11 @@ class MainInfo {
     });
   }
 
-  /*
+  /**
    * Displays the role infos for a specific room on the screen.
    *
    * @param {Room} room
    */
-
   static _visualizeRoleInfos(room) {
     if (!room.memory.roleInfo) return;
 
@@ -36,7 +35,7 @@ class MainInfo {
         room.energyAvailable +
         "/" +
         room.energyCapacityAvailable +
-        "🟡",
+        " 🟡",
       x,
       y++,
       { align: "left", opacity: console.opacity },
@@ -69,12 +68,11 @@ class MainInfo {
     }
   }
 
-  /*
+  /**
    * Fetches the memory of the room's console.
    *
    * @param {Room} room
    */
-
   static _fetchMemoryOfRoomConsole(room) {
     var defaultArray = {
       x: 30,
@@ -92,12 +90,11 @@ class MainInfo {
     return room.memory.console;
   }
 
-  /*
+  /**
    * Displays the console for a specific room on the screen.
    *
    * @param {Room} room
    */
-
   static _visualizeConsole(room) {
     var console = this._fetchMemoryOfRoomConsole(room);
     var x = console.x;
@@ -139,23 +136,21 @@ class MainInfo {
     }
   }
 
-  /*
+  /**
    * Clears the UI console.
    */
-
   static clearLines() {
     this._lineTimes = [];
     this._lines = [];
     this._lineRooms = [];
   }
 
-  /*
+  /**
    * Logs the string to the UI console.
    *
    * @param the new line
    * @param {Room} room
    */
-
   static log(newLine, room) {
     if (newLine === "object" && newLine !== null) {
       console.log(JSON.stringify(newLine));
@@ -174,34 +169,31 @@ class MainInfo {
     this._lineRooms = this._lineRooms.slice(0, height);
   }
 
-  /*
+  /**
    * Logs the error to the UI console.
    *
    * @param the new line
    * @param {Room} room
    */
-
   static error(newLine, room) {
     this.log("🛑 " + newLine, room);
   }
 
-  /*
+  /**
    * Logs the warning to the UI console.
    *
    * @param the new line
    * @param {Room} room
    */
-
   static warning(newLine, room) {
     this.log("⚠ " + newLine, room);
   }
 
-  /*
+  /**
    * Returns the max console height for all rooms.
    *
    * @param the new line
    */
-
   static getMaxHeight() {
     var result = Math.max(
       MainUtil.findAllRooms().map(

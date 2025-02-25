@@ -1,4 +1,4 @@
-/*
+/**
  * This manager initializes and manages the memory of all kinds of different objects.
  *
  * TODO: maybe memory could be stored closer to where it is used?
@@ -8,13 +8,13 @@ var MainUtil = require("./main.util");
 var info = require("./main.info");
 
 class MemoryManager {
-  /*
+
+  /**
    * Fetches the memory of the room's role config for a specific base name.
    *
    * @param {Room} room
    * @param allRoles - the roles to be initialized
    */
-
   static fetchRoomRoleConfigForBase(baseName, allRoles = []) {
     var roomsOfBase = MainUtil.findAllRooms().filter(
       (room) => room.memory.base && room.memory.base.name === baseName,
@@ -25,12 +25,11 @@ class MemoryManager {
     return null;
   }
 
-  /*
+  /**
    * Fetches the memory of all the room's role configs.
    *
    * @param allRoles
    */
-
   static _fetchAllRoomRoleConfigs(allRoles) {
     MainUtil.findAllRooms().forEach((room) => {
       if (room.memory.base) {
@@ -39,13 +38,12 @@ class MemoryManager {
     });
   }
 
-  /*
+  /**
    * Fetches the memory of the room's role config.
    *
    * @param {Room} room
    * @param allRoles - the roles to be initialized
    */
-
   static _fetchRoomRoleConfig(room, allRoles = []) {
     var defaultArray = {
       partsMinMultiplier: 0,
@@ -69,13 +67,12 @@ class MemoryManager {
     return room.memory.base.roleConfig;
   }
 
-  /*
+  /**
    * Fetches the memory of a room's base.
    *
    * @param {Room} room
    * @param baseName
    */
-
   static fetchRoomBase(room, baseName) {
     var defaultArray = {
       name: baseName,
@@ -90,25 +87,23 @@ class MemoryManager {
     return room.memory.base;
   }
 
-  /*
+  /**
    * Clears the memory of the all the room's infos.
    *
    * @param allRoles
    */
-
   static _clearAllRoomRoleInfos(allRoles) {
     MainUtil.findAllRooms().forEach((room) =>
       this._clearRoomRoleInfo(room, allRoles),
     );
   }
 
-  /*
+  /**
    * Clears the memory of the room's role info.
    *
    * @param {Room} room
    * @param allRoles
    */
-
   static _clearRoomRoleInfo(room, allRoles) {
     var defaultArray = {};
     allRoles.forEach((role) => {
@@ -125,13 +120,12 @@ class MemoryManager {
     return room.memory.roleInfo;
   }
 
-  /*
+  /**
    * Gets the required number for a room and a role.
    *
    * @param {Room} room
    * @param roleName
    */
-
   static getRequiredNumberForRoomAndRole(room, roleName) {
     var hasBase = room.memory.base;
     return hasBase
@@ -141,12 +135,11 @@ class MemoryManager {
       : -1;
   }
 
-  /*
+  /**
    * Initializes all memories for this round.
    *
    * @param allRoles
    */
-
   static initRound(allRoles) {
     this._initSpawns();
 
@@ -156,10 +149,9 @@ class MemoryManager {
     this._deleteUnusedMemory();
   }
 
-  /*
+  /**
    * Initializes the very first base.
    */
-
   static _initSpawns() {
     // all spawns (and all creeps) have a home, so that we find them again
 
@@ -178,10 +170,9 @@ class MemoryManager {
       });
   }
 
-  /*
+  /**
    * Delete the memory of deceased creeps.
    */
-
   static _deleteUnusedMemory() {
     for (var name in Memory.creeps) {
       if (!Game.creeps[name]) {

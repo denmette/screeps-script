@@ -1,4 +1,4 @@
-/*
+/**
  * A base is a 'virtual' construct. It most closely resembles a 'room'.
  * To configure a base, the first spawn is marked as such. To create more
  * then one base, all further have to be marked manually?
@@ -16,16 +16,17 @@ var Handman = require("./role.handyman");
 var Explorer = require("./role.explorer");
 var Miner = require("./role.miner");
 var StoreKeeper = require("./role.storekeeper");
+var InvaderHunter = require("./role.hunter");
 
 var MemoryManager = require("./manager.memory");
 
 class BaseManager {
-  /*
+
+  /**
    * Performs 'runBase()' on an instance of BaseManager for each room.
    *
    * @param allRoles
    */
-
   static runAll(allRoles = BaseManager.fetchAllRoles()) {
     MainUtil.findAllRooms().forEach((room) =>
       new BaseManager(room, allRoles).runBase(),
@@ -42,6 +43,7 @@ class BaseManager {
       new Miner(),
       new StoreKeeper(),
       new Courier(),
+      new InvaderHunter(),
     ].sort((a, b) => b.priority - a.priority);
   }
 
@@ -51,10 +53,9 @@ class BaseManager {
     this._allRoles = allRoles;
   }
 
-  /*
+  /**
    * Runs this manager for the specific room it belongs too.
    */
-
   runBase() {
     if (this._room.memory.base) {
       this._repopulateCreeps();
@@ -63,10 +64,9 @@ class BaseManager {
     }
   }
 
-  /*
+  /**
    * Test for each role if enough creeps are present (else create them).
    */
-
   _repopulateCreeps() {
     var baseName = this._room.memory.base.name;
     var alreadySpawned = false;
@@ -89,12 +89,11 @@ class BaseManager {
     });
   }
 
-  /*
+  /**
    * Spawns a creep in a room for a specific role.
    *
    * @param role
    */
-
   _spawnCreepForRole(role) {
     var freeSpawn = this._fetchFreeSpawn(this._room.memory.base.name);
     if (freeSpawn) {
@@ -136,12 +135,11 @@ class BaseManager {
     return false;
   }
 
-  /*
+  /**
    * Spawns a creep in a room for a specific role name.
    *
    * @param roleName
    */
-
   spawnCreepForRoleName(roleName) {
     var roles = this._allRoles.filter((role) => role.roleName == roleName);
     if (roles.length > 0) {
@@ -151,12 +149,11 @@ class BaseManager {
     return false;
   }
 
-  /*
+  /**
    * Fetches a free spawn for this particular room.
    *
    * @param baseName the name of the base to search; null for any
    */
-
   _fetchFreeSpawn(baseName) {
     var freeSpawns = MainUtil.findAllSpawns().filter(
       (spawn) =>
@@ -165,10 +162,9 @@ class BaseManager {
     return freeSpawns.length > 0 ? freeSpawns[0] : null;
   }
 
-  /*
+  /**
    * Show spawning 'animation' for each spawn.
    */
-
   _showSpawningAnimation() {
     MainUtil.findAllSpawns()
       .filter((spawn) => spawn.spawning && spawn.room == this._room)
@@ -180,10 +176,9 @@ class BaseManager {
       });
   }
 
-  /*
+  /**
    * Move the creeps around for a specific room.
    */
-
   _moveCreeps() {
     var baseName = this._room.memory.base.name;
     MainUtil.findAllCreeps()
@@ -216,10 +211,9 @@ class BaseManager {
       });
   }
 
-  /*
+  /**
    * Find a role. Never returns null. The resulting roll is always necessary.
    */
-
   _findNecessaryMandatoryRole(roleName) {
     var result = this._findMandatoryRole(roleName);
 
@@ -235,10 +229,9 @@ class BaseManager {
     return result;
   }
 
-  /*
+  /**
    * Find a role. Never returns null, but the default role. Logs an error if role could not be found.
    */
-
   _findMandatoryRole(roleName) {
     var creepRoles = this._allRoles.filter((role) => roleName == role.roleName);
 

@@ -1,4 +1,4 @@
-/*
+/**
  * Couriers transfer data between two game objects of unknown type.
  *
  * Right now only Mineral => Lab for RESOURCE_OXYGEN is supported.
@@ -46,12 +46,11 @@ class Courier extends RolePrototype {
     return this._findById(room, room.memory.target);
   }
 
-  /*
+  /**
    * Finds a source or target by its ID.
    *
    * @param ID
    */
-
   _findById(room, id) {
     var object = Game.getObjectById(id);
     if (!object) {

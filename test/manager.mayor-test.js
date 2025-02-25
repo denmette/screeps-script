@@ -6,9 +6,6 @@ var assert = require("assert");
 var info = require("../src/main.info");
 
 // TODO: Test these methods:
-// - runAll()
-// - constructor()
-// - run()
 // - validate()
 // - validateRoads()
 // - buildRoads()
@@ -87,6 +84,40 @@ describe("manager.mayor", () => {
 
       assert.deepEqual(expecting, result);
       assert.deepEqual(expecting, room.memory.mayor);
+    });
+  });
+
+  describe("#constructor", () => {
+    it("initializes with room", () => {
+      var room = new Room();
+      var mayor = new MayorManager(room);
+      assert.strictEqual(mayor._room, room);
+    });
+  });
+
+  describe("#runAll", () => {
+    it("calls run() for all rooms", () => {
+      var room = new Room();
+      var called = false;
+      MayorManager.prototype.run = function () { called = true; };
+      MayorManager.runAll();
+      assert.strictEqual(called, true);
+    });
+  });
+
+  describe("#run", () => {
+    it("executes without errors", () => {
+      var room = new Room();
+      var mayor = new MayorManager(room);
+      assert.doesNotThrow(() => mayor.run());
+    });
+  });
+
+  describe("#_validate", () => {
+    it("runs validation without error", () => {
+      var room = new Room();
+      var mayor = new MayorManager(room);
+      assert.doesNotThrow(() => mayor._validate());
     });
   });
 });
