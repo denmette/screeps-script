@@ -445,19 +445,19 @@ class RolePrototype {
     }
 
     // TOOD: looting ruins and graves (if they have the resource) might be a good idea, too
-    var ruin = creep.pos.findInRange(FIND_RUINS, 3);
-    if (ruin.length > 0 && creep.store.getFreeCapacity() > 0) {
-      if (creep.memory.debug) {
-        info.log('⚰ ' + MainUtil.getDisplayName(creep) + ' is looting ruin ' + MainUtil.getDisplayName(dropenergy[0]), this._baseRoom);
-      }
-      var withdrawAnswer = creep.withdraw(ruin[0], RESOURCE_ENERGY);
-      if (withdrawAnswer == ERR_NOT_IN_RANGE) {
-        creep.moveTo(ruin[0])
-        return;
-      }
-      console.log(withdrawAnswer);
-      return;
-    }
+    // var ruin = creep.pos.findInRange(FIND_RUINS, 3);
+    // if (ruin.length > 0 && creep.store.getFreeCapacity() > 0) {
+    //   if (creep.memory.debug) {
+    //     info.log('⚰ ' + MainUtil.getDisplayName(creep) + ' is looting ruin ' + MainUtil.getDisplayName(dropenergy[0]), this._baseRoom);
+    //   }
+    //   var withdrawAnswer = creep.withdraw(ruin[0], RESOURCE_ENERGY);
+    //   if (withdrawAnswer == ERR_NOT_IN_RANGE) {
+    //     creep.moveTo(ruin[0])
+    //     return;
+    //   }
+    //   console.log(withdrawAnswer);
+    //   return;
+    // }
 
     this._work(creep);
   }

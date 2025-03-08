@@ -116,37 +116,44 @@ class Explorer extends RolePrototype {
 
   /**
    * Find the correct flag to go to
+   * @param {Creep} creep
    */
-
   _goToFlagRoom(creep) {
     var targetFlag;
-    if (creep.memory.target) {
-      var creepTarget = this._findTargets(creep.room).filter(
-        (target) => target.name == creep.memory.target,
-      );
-      if (creepTarget.length > 0) {
-        targetFlag = creepTarget[0];
+
+    // First, check if the memory has a valid flag name and try to retrieve it from Game.flags
+    if (creep.memory.target && Game.flags[creep.memory.target]) {
+      targetFlag = Game.flags[creep.memory.target];
+    } else {
+      // If not found in memory, find the closest available flag
+      targetFlag = this._findClosestTarget(creep);
+      if (targetFlag) {
+        creep.memory.target = targetFlag.name;
       }
     }
+
+    // If no flag is found at all, log an error and return early
     if (!targetFlag) {
-      targetFlag = this._findClosestTarget(creep);
-      creep.memory.target = targetFlag.name;
-      info.log(
-        this.symbol +
-          " " +
-          MainUtil.getDisplayName(creep) +
-          " travels to " +
-          targetFlag.name,
-      );
-      creep.memory.home = targetFlag.name;
+      console.log(`🛑 ${creep.name} could not find any valid flag.`);
+      return;
     }
 
-    // walk towards my flag
+    // Log the movement and set the home memory to the flag's room
+    info.log(
+      this.symbol +
+        " " +
+        MainUtil.getDisplayName(creep) +
+        " travels to " +
+        targetFlag.name,
+    );
+    creep.memory.home = targetFlag.name;
 
+    // Move towards the flag
     this._moveToLocation(creep, targetFlag);
 
+    // Check if we reached the room
     if (creep.room == targetFlag.room) {
-      var hasRoomAlready = creep.room.controller.my;
+      var hasRoomAlready = creep.room.controller && creep.room.controller.my;
       creep.memory.phase = hasRoomAlready
         ? PHASE_CREATE_SPAWN
         : PHASE_CLAIM_FLAG_ROOM;

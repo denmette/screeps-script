@@ -99,7 +99,9 @@ describe("manager.mayor", () => {
     it("calls run() for all rooms", () => {
       var room = new Room();
       var called = false;
-      MayorManager.prototype.run = function () { called = true; };
+      MayorManager.prototype.run = function () {
+        called = true;
+      };
       MayorManager.runAll();
       assert.strictEqual(called, true);
     });

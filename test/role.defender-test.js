@@ -20,7 +20,7 @@ describe("role.defender", () => {
     var startsWith = "class Defender";
     assert.equal(
       startsWith,
-      Defender.toString().substring(0, startsWith.length)
+      Defender.toString().substring(0, startsWith.length),
     );
 
     var object = new Defender();
