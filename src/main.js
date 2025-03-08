@@ -182,3 +182,48 @@ global.generateLayoutForRoom = function (
   MainInfo.error("Could not find room: " + roomName);
   return false;
 };
+
+/**
+ * Dynamically updates the required number of creeps for a specific role in the player's active room.
+ *
+ * This function automatically detects the player's owned room (where they have a controller)
+ * and updates the `requiredNumber` for the specified role in the room's memory.
+ *
+ * @param {string} role - The name of the creep role to update (e.g., 'miner', 'builder').
+ * @param {number} count - The new required number of creeps for this role.
+ *
+ * Usage:
+ * setRequiredCreeps('miner', 4); // Sets the required miners to 4 in the detected room.
+ * setRequiredCreeps('builder', 2); // Sets the required builders to 2 in the detected room.
+ *
+ * Console Output:
+ * - Confirms the update when successful.
+ * - Provides an error message if the role or room memory structure is missing.
+ */
+global.setRequiredCreeps = function(role, count) {
+    // Get the player's currently visible owned room
+    let room = _.find(Game.rooms, r => r.controller && r.controller.my);
+
+    if (!room) {
+        console.log("No owned room detected. Make sure you are controlling a room.");
+        return;
+    }
+
+    if (!room.memory.base) {
+        console.log(`Base memory not initialized for room ${room.name}.`);
+        return;
+    }
+    if (!room.memory.base.roleConfig) {
+        console.log(`Role configuration not found for room ${room.name}.`);
+        return;
+    }
+    if (!room.memory.base.roleConfig[role]) {
+        MainInfo.error(`Role ${role} does not exist in configuration.`);
+        return;
+    }
+
+    // Set the required number of creeps
+    room.memory.base.roleConfig[role].requiredNumber = count;
+    console.log(`Updated requiredNumber for ${role} in ${room.name} to ${count}`);
+};
+
